@@ -12,18 +12,18 @@ struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
 
     @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)],
+        sortDescriptors: [NSSortDescriptor(keyPath: \TodoItem.createdAt, ascending: true)],
         animation: .default)
-    private var items: FetchedResults<Item>
+    private var items: FetchedResults<TodoItem>
 
     var body: some View {
         NavigationView {
             List {
                 ForEach(items) { item in
                     NavigationLink {
-                        Text("Item at \(item.timestamp!, formatter: itemFormatter)")
+                        Text("Item at \(item.createdAt!, formatter: itemFormatter)")
                     } label: {
-                        Text(item.timestamp!, formatter: itemFormatter)
+                        Text(item.createdAt!, formatter: itemFormatter)
                     }
                 }
                 .onDelete(perform: deleteItems)
@@ -37,15 +37,14 @@ struct ContentView: View {
                         Label("Add Item", systemImage: "plus")
                     }
                 }
-            }
-            Text("Select an item")
+            }.navigationTitle(Text("Todo"))
         }
     }
 
     private func addItem() {
         withAnimation {
-            let newItem = Item(context: viewContext)
-            newItem.timestamp = Date()
+            let newItem = TodoItem(context: viewContext)
+            newItem.createdAt = Date()
 
             do {
                 try viewContext.save()
@@ -81,6 +80,8 @@ private let itemFormatter: DateFormatter = {
     return formatter
 }()
 
-#Preview {
-    ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+    }
 }
