@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		BE0C505D2A7FC511008E8BD5 /* View+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0C505C2A7FC511008E8BD5 /* View+Ext.swift */; };
+		BE1DF03D2A7FFB5800B368AA /* TodoListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1DF03C2A7FFB5800B368AA /* TodoListViewModel.swift */; };
 		BE1EB8222A7FAA29002EFFB8 /* Todo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1EB8212A7FAA29002EFFB8 /* Todo.swift */; };
 		BEC261E22A7FA51C009F7523 /* TodoItemCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC261E12A7FA51C009F7523 /* TodoItemCellView.swift */; };
 		BEC666792A7D41C60053EECE /* Todo_ListApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC666782A7D41C60053EECE /* Todo_ListApp.swift */; };
@@ -20,6 +21,7 @@
 
 /* Begin PBXFileReference section */
 		BE0C505C2A7FC511008E8BD5 /* View+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+Ext.swift"; sourceTree = "<group>"; };
+		BE1DF03C2A7FFB5800B368AA /* TodoListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TodoListViewModel.swift; path = "Todo List/TodoListViewModel.swift"; sourceTree = SOURCE_ROOT; };
 		BE1EB8212A7FAA29002EFFB8 /* Todo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Todo.swift; sourceTree = "<group>"; };
 		BEC261E12A7FA51C009F7523 /* TodoItemCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodoItemCellView.swift; sourceTree = "<group>"; };
 		BEC666752A7D41C60053EECE /* Todo List.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Todo List.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -97,6 +99,7 @@
 			children = (
 				BEC6667C2A7D41C80053EECE /* Assets.xcassets */,
 				BEC666782A7D41C60053EECE /* Todo_ListApp.swift */,
+				BE1DF03C2A7FFB5800B368AA /* TodoListViewModel.swift */,
 				BE0C50602A7FEB97008E8BD5 /* View */,
 				BE0C505F2A7FEB87008E8BD5 /* Helper */,
 				BE0C505E2A7FEB7A008E8BD5 /* Extension */,
@@ -184,6 +187,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE1DF03D2A7FFB5800B368AA /* TodoListViewModel.swift in Sources */,
 				BE0C505D2A7FC511008E8BD5 /* View+Ext.swift in Sources */,
 				BEC666822A7D41C80053EECE /* PersistenceController.swift in Sources */,
 				BE1EB8222A7FAA29002EFFB8 /* Todo.swift in Sources */,

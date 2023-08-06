@@ -10,6 +10,8 @@ import SwiftUI
 struct TodoItemCellView: View {
     @Binding var model: TodoModel
     
+    var onDeleteAction: ((UUID) -> Void)?
+    
     var body: some View {
         HStack(spacing: 15) {
             Button(action: {
@@ -41,6 +43,13 @@ struct TodoItemCellView: View {
             } else: { view in
                 view.tint(.green)
             }
+        }.swipeActions(edge: .trailing, allowsFullSwipe: true) {
+            Button {
+                (onDeleteAction?(model.id) ?? {}())
+            } label: {
+                Label("Delete", systemImage: "trash")
+            }
+            .tint(.red)
         }
     }
     
