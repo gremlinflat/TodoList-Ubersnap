@@ -2,14 +2,16 @@ import SwiftUI
 import CoreData
 
 class TodoListViewModel: ObservableObject {
-//    @Environment(\.managedObjectContext) private var viewContext
     private var viewContext: NSManagedObjectContext = PersistenceController.shared.container.viewContext
     @Published var fetchedItems: [TodoPersistenceModel] = []
-
+    @Published var isShowingSheet: Bool = false
+    @Published var selectedTodoModel: TodoModel? = nil
+    
+    
     init() {
         fetchItems()
     }
-
+    
     private func fetchItems() {
         do {
             let fetchRequest: NSFetchRequest<TodoPersistenceModel> = TodoPersistenceModel.fetchRequest()
@@ -20,7 +22,7 @@ class TodoListViewModel: ObservableObject {
             fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
         }
     }
-
+    
     var todoModels: [Binding<TodoModel>] {
         fetchedItems.indices.map { index in
             Binding(
@@ -31,33 +33,41 @@ class TodoListViewModel: ObservableObject {
             )
         }
     }
-
+    
     private func updateTodo(at index: Int, with newValue: TodoModel) {
         withAnimation {
             let originalData = fetchedItems[index]
             originalData.title = newValue.title
             originalData.content = newValue.content
             originalData.dueDate = newValue.dueDate
-            originalData.modifiedAt = Date()
+            originalData.modifiedAt = newValue.modifiedAt
             originalData.isFinished = newValue.isFinished
-
+            
             save()
         }
     }
-
-    func addItem() {
+    
+    func addItem(from model: TodoModel) {
         withAnimation {
             let newItem = TodoPersistenceModel(context: viewContext)
             newItem.id = UUID()
-            newItem.createdAt = Date()
-            let characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-            newItem.title = String((0..<5).map { _ in characters.randomElement()! })
-            newItem.content = String((0..<18).map { _ in characters.randomElement()! })
-
+            newItem.title = model.title
+            newItem.content = model.content
+            newItem.createdAt = model.createdAt
+            newItem.dueDate = model.dueDate
+            newItem.isFinished = model.isFinished
             save()
         }
     }
 
+    
+    func updateSelectedTodoModel() {
+        if let selectedModel = selectedTodoModel, let itemIndex = fetchedItems.firstIndex(where: { $0.id == selectedModel.id }) {
+                updateTodo(at: itemIndex, with: selectedModel)
+            }
+    }
+    
+    
     private func save() {
         do {
             try viewContext.save()
@@ -69,12 +79,12 @@ class TodoListViewModel: ObservableObject {
     }
     
     func deleteItem(for id: UUID) -> Void {
-            withAnimation {
-                let itemToDelete = fetchedItems.filter { $0.id! == id }
-                guard let item = itemToDelete.first else { return }
-                viewContext.delete(item)
-                
-                save()
-            }
+        withAnimation {
+            let itemToDelete = fetchedItems.filter { $0.id! == id }
+            guard let item = itemToDelete.first else { return }
+            viewContext.delete(item)
+            
+            save()
         }
+    }
 }

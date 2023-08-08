@@ -14,19 +14,14 @@ struct TodoItemCellView: View {
     
     var body: some View {
         HStack(spacing: 15) {
-            Button(action: {
-                print("action")
-                toggleItem()
-            }, label: {
-                Image(systemName: model.isFinished ? "record.circle" : "circle")
-                    .font(.title)
-                    .foregroundColor(model.isFinished ? .gray : .accentColor)
-            })
+            Image(systemName: model.isFinished ? "record.circle" : "circle")
+                .font(.title)
+                .foregroundColor(model.isFinished ? .gray : .accentColor)
             VStack(alignment: .leading, spacing: 10) {
-                TextField("Title", text: $model.title) // Editable text field for title
+                Text(model.title)
                     .font(.headline)
                     .strikethrough(model.isFinished, color: .gray)
-                TextField("Content", text: $model.content) // Editable text field for content
+                Text(model.content)
                     .font(.caption)
                     .strikethrough(model.isFinished, color: .gray)
             }
@@ -55,7 +50,6 @@ struct TodoItemCellView: View {
     
     private func toggleItem() {
         model.isFinished.toggle()
-        print("toogled \(model.isFinished)")
     }
 }
 
