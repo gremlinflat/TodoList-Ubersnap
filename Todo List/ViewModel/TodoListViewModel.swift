@@ -34,6 +34,20 @@ class TodoListViewModel: ObservableObject {
         }
     }
     
+    var futureTodoModels: [Binding<TodoModel>] {
+        return todoModels.filter { $0.wrappedValue.dueDate > Date() }
+    }
+    
+    var todayTodoModels: [Binding<TodoModel>] {
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        return todoModels.filter { calendar.isDate($0.wrappedValue.dueDate, inSameDayAs: today) }
+    }
+    
+    var pastTodoModels: [Binding<TodoModel>] {
+        return todoModels.filter { $0.wrappedValue.dueDate < Date() }
+    }
+    
     private func updateTodo(at index: Int, with newValue: TodoModel) {
         withAnimation {
             let originalData = fetchedItems[index]
@@ -59,12 +73,12 @@ class TodoListViewModel: ObservableObject {
             save()
         }
     }
-
+    
     
     func updateSelectedTodoModel() {
         if let selectedModel = selectedTodoModel, let itemIndex = fetchedItems.firstIndex(where: { $0.id == selectedModel.id }) {
-                updateTodo(at: itemIndex, with: selectedModel)
-            }
+            updateTodo(at: itemIndex, with: selectedModel)
+        }
     }
     
     

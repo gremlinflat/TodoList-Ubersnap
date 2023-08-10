@@ -13,12 +13,40 @@ struct TodoListView: View {
     
     var body: some View {
         NavigationView {
-            List(viewModel.todoModels, id: \.id) { item in
-                TodoItemCellView(model: item, onDeleteAction: viewModel.deleteItem)
-                    .onTapGesture(perform: {
-                        viewModel.selectedTodoModel = item.wrappedValue
-                        viewModel.isShowingSheet.toggle()
-                    })
+//            List(viewModel.todoModels, id: \.id) { item in
+//                TodoItemCellView(model: item, onDeleteAction: viewModel.deleteItem)
+//                    .onTapGesture(perform: {
+//                        viewModel.selectedTodoModel = item.wrappedValue
+//                        viewModel.isShowingSheet.toggle()
+//                    })
+            List {
+                Section(header: Text("Future")) {
+                    ForEach(viewModel.futureTodoModels, id: \.id) { item in
+                        TodoItemCellView(model: item, onDeleteAction: viewModel.deleteItem)
+                            .onTapGesture(perform: {
+                                viewModel.selectedTodoModel = item.wrappedValue
+                                viewModel.isShowingSheet.toggle()
+                            })
+                    }
+                }
+                Section(header: Text("Today")) {
+                    ForEach(viewModel.todayTodoModels, id: \.id) { item in
+                        TodoItemCellView(model: item, onDeleteAction: viewModel.deleteItem)
+                            .onTapGesture(perform: {
+                                viewModel.selectedTodoModel = item.wrappedValue
+                                viewModel.isShowingSheet.toggle()
+                            })
+                    }
+                }
+                Section(header: Text("Past")) {
+                    ForEach(viewModel.pastTodoModels, id: \.id) { item in
+                        TodoItemCellView(model: item, onDeleteAction: viewModel.deleteItem)
+                            .onTapGesture(perform: {
+                                viewModel.selectedTodoModel = item.wrappedValue
+                                viewModel.isShowingSheet.toggle()
+                            })
+                    }
+                }
             }
             .transition(.slide)
             .toolbar {
@@ -38,7 +66,7 @@ struct TodoListView: View {
             AddTodoItemView(model: $viewModel.selectedTodoModel, onCreateAction: viewModel.addItem, onSaveAction: viewModel.updateSelectedTodoModel)
                 .presentationDetents([.medium, .large])
                 .onDisappear(perform: {
-                    viewModel.selectedTodoModel = nil 
+                    viewModel.selectedTodoModel = nil
                 })
         }
     }
