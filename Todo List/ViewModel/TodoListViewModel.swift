@@ -37,15 +37,20 @@ class TodoListViewModel: ObservableObject {
     var futureTodoModels: [Binding<TodoModel>] {
         return todoModels.filter { $0.wrappedValue.dueDate > Date() }
     }
-    
+
     var todayTodoModels: [Binding<TodoModel>] {
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date())
         return todoModels.filter { calendar.isDate($0.wrappedValue.dueDate, inSameDayAs: today) }
     }
-    
+
     var pastTodoModels: [Binding<TodoModel>] {
-        return todoModels.filter { $0.wrappedValue.dueDate < Date() }
+        let calendar = Calendar.current
+        let yesterday = calendar.date(byAdding: .day, value: -1, to: Date())!
+        return todoModels.filter {
+            $0.wrappedValue.dueDate < yesterday &&
+            !calendar.isDate($0.wrappedValue.dueDate, inSameDayAs: calendar.startOfDay(for: Date()))
+        }
     }
     
     private func updateTodo(at index: Int, with newValue: TodoModel) {

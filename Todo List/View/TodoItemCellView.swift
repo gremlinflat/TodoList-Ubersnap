@@ -36,24 +36,24 @@ struct TodoItemCellView: View {
                 .if(model.isFinished) { view in
                     view.foregroundColor(.gray)
                 }
-            }.swipeActions(edge: .leading, allowsFullSwipe: true) {
-                Button {
-                    toggleItem()
-                } label: {
-                    Text(model.isFinished ? "Undone" : "Done")
-                }.if(model.isFinished) { view in
-                    view.tint(.red)
-                } else: { view in
-                    view.tint(.green)
-                }
-            }.swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                Button {
-                    (onDeleteAction?(model.id) ?? {}())
-                } label: {
-                    Label("Delete", systemImage: "trash")
-                }
-                .tint(.red)
             }
+        }.swipeActions(edge: .leading, allowsFullSwipe: true) {
+            Button {
+                toggleItem()
+            } label: {
+                Text(model.isFinished ? "Undone" : "Done")
+            }.if(model.isFinished) { view in
+                view.tint(.red)
+            } else: { view in
+                view.tint(.green)
+            }
+        }.swipeActions(edge: .trailing, allowsFullSwipe: true) {
+            Button {
+                (onDeleteAction?(model.id) ?? {}())
+            } label: {
+                Label("Delete", systemImage: "trash")
+            }
+            .tint(.red)
         }
     }
     
