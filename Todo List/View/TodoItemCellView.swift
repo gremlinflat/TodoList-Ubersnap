@@ -11,40 +11,49 @@ struct TodoItemCellView: View {
     @Binding var model: TodoModel
     
     var onDeleteAction: ((UUID) -> Void)?
+    var onTap: (() -> Void)?
     
     var body: some View {
-        HStack(spacing: 15) {
-            Image(systemName: model.isFinished ? "record.circle" : "circle")
-                .font(.title)
-                .foregroundColor(model.isFinished ? .gray : .accentColor)
-            VStack(alignment: .leading, spacing: 10) {
-                Text(model.title)
-                    .font(.headline)
-                    .strikethrough(model.isFinished, color: .gray)
-                Text(model.content)
-                    .font(.caption)
-                    .strikethrough(model.isFinished, color: .gray)
+        Button {
+            onTap?()
+        } label: {
+            HStack(spacing: 15) {
+                Button {
+                    model.isFinished.toggle()
+                } label: {
+                    Image(systemName: model.isFinished ? "record.circle" : "circle")
+                        .font(.title)
+                        .foregroundColor(model.isFinished ? .gray : .accentColor)
+                }
+                VStack(alignment: .leading, spacing: 10) {
+                    Text(model.title)
+                        .font(.headline)
+                        .strikethrough(model.isFinished, color: .gray)
+                    Text(model.content)
+                        .font(.caption)
+                        .strikethrough(model.isFinished, color: .gray)
+                }
+                .if(model.isFinished) { view in
+                    view.foregroundColor(.gray)
+                }
+            }.swipeActions(edge: .leading, allowsFullSwipe: true) {
+                Button {
+                    toggleItem()
+                } label: {
+                    Text(model.isFinished ? "Undone" : "Done")
+                }.if(model.isFinished) { view in
+                    view.tint(.red)
+                } else: { view in
+                    view.tint(.green)
+                }
+            }.swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                Button {
+                    (onDeleteAction?(model.id) ?? {}())
+                } label: {
+                    Label("Delete", systemImage: "trash")
+                }
+                .tint(.red)
             }
-            .if(model.isFinished) { view in
-                view.foregroundColor(.gray)
-            }
-        }.swipeActions(edge: .leading, allowsFullSwipe: true) {
-            Button {
-                toggleItem()
-            } label: {
-                Text(model.isFinished ? "Undone" : "Done")
-            }.if(model.isFinished) { view in
-                view.tint(.red)
-            } else: { view in
-                view.tint(.green)
-            }
-        }.swipeActions(edge: .trailing, allowsFullSwipe: true) {
-            Button {
-                (onDeleteAction?(model.id) ?? {}())
-            } label: {
-                Label("Delete", systemImage: "trash")
-            }
-            .tint(.red)
         }
     }
     
