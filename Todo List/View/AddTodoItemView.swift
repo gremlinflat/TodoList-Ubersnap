@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct AddTodoItemView: View {
-    //    @ObservedObject var viewModel: TodoListViewModel
     @Environment(\.dismiss) var dismiss
     
     @State private var title = ""
@@ -19,7 +18,6 @@ struct AddTodoItemView: View {
     
     let onCreateAction: ((TodoModel) -> Void)?
     let onSaveAction: (() -> Void)?
-//    private var model: Binding<TodoModel?>?
     @Binding private var model: TodoModel?
     
     init(model: Binding<TodoModel?>? = nil, onCreateAction: ((TodoModel) -> Void)? = nil, onSaveAction: (() -> Void)? = nil ) {
